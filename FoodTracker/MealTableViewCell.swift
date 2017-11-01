@@ -10,6 +10,11 @@ import UIKit
 
 class MealTableViewCell: UITableViewCell {
 
+    //Mark: Properties
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var photoImageView: UIImageView!
+    @IBOutlet var ratingControl: RatingControl!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
