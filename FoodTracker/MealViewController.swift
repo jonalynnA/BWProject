@@ -15,7 +15,6 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     //MARK: Properties
     
     @IBOutlet var nameTextField: UITextField!
-    @IBOutlet var mealNameLabel: UILabel!
     @IBOutlet var photoImageView: UIImageView!
     @IBOutlet var ratingControl: RatingControl!
     /* This value is either passed by `MealTableViewController`
@@ -32,6 +31,14 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         
         // Handle the text field's user input through delegate callbacks.
         self.nameTextField.delegate = self
+        
+        // Set up views if editing an existing Meal.
+        if let meal = self.meal {
+            self.navigationItem.title = meal.name
+            self.nameTextField.text = meal.name
+            self.photoImageView.image = meal.photo
+            self.ratingControl.rating = meal.rating
+        }
         
         // Enable the save button only if the text field has a valid Meal name.
         self.updateSaveButtonState()
@@ -100,6 +107,10 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         // Set the meal to be passed to MealTableViewController after the
         // unwind segue.
         self.meal = Meal(name: name, photo: photo, rating: rating)
+    }
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
     //MARK: Actions

@@ -56,6 +56,8 @@ import UIKit
         self.setupButtons()
     }
     
+    //MARK: Private Methods
+    
     private func setupButtons() {
         // Clear existing buttons.
         for button in self.ratingButtons {
