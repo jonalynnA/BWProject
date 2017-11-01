@@ -8,7 +8,10 @@
 
 import UIKit
 
-class RatingControl: UIStackView {
+// Need @IBDesignable so that the Interface Builder can instantiate and draw
+// a copy of the controld irectly in the canvas, and the layout engine can
+// properly position and size the control. Without it, we get warnings/errors.
+@IBDesignable class RatingControl: UIStackView {
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -20,37 +23,79 @@ class RatingControl: UIStackView {
 
     //MARK: Properties
     private var ratingButtons = [UIButton]()
-    
     var rating = 0
+    
+    // The @IBInspectable annotation lets us set these vlaues in the
+    // Attributes inspector on the right sidebar.
+    @IBInspectable var starSize: CGSize = CGSize(width: 44.0, height: 44.0) {
+        // If we edit this property, set up the buttons with new values.
+        didSet {
+            self.setupButtons()
+        }
+    }
+    @IBInspectable var starCount: Int = 5 {
+        // If we edit this property, set up the buttons with new values.
+        didSet {
+            self.setupButtons()
+        }
+    }
     
     //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupButtons()
+        self.setupButtons()
     }
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
-        setupButtons()
+        self.setupButtons()
     }
     
     private func setupButtons() {
-        // Create button and add constraints.
-        let button = UIButton()
-        button.backgroundColor = UIColor.red
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 44.0).isActive = true
+        // Clear existing buttons.
+        for button in self.ratingButtons {
+            removeArrangedSubview(button)
+            button.removeFromSuperview()
+        }
+        ratingButtons.removeAll()
         
-        // Add click handler.
-        button.addTarget(self, action:
-            #selector(RatingControl.ratingButtonTapped(button:)),
-            for: .touchUpInside)
-        
-        // Add button to the horizontal stack view.
-        // This function call adds the view to the list of views managed by
-        // RatingControl, which is set on the HorizontalStackView UI object.
-        addArrangedSubview(button)
+        // Load button images.
+        let bundle = Bundle(for: type(of: self))
+        let filledStar = UIImage(named: "filledStar", in: bundle,
+                                 compatibleWith: self.traitCollection)
+        let emptyStar = UIImage(named: "emptyStar", in: bundle,
+                                 compatibleWith: self.traitCollection)
+        let highlightedStar = UIImage(named: "highlightedStar", in: bundle,
+                                 compatibleWith: self.traitCollection)
+        // Create 5 new buttons.
+        for _ in 0..<self.starCount {
+            let button = UIButton()
+            
+            // Set button images.
+            button.setImage(emptyStar, for: .normal)
+            button.setImage(filledStar, for: .selected)
+            button.setImage(highlightedStar, for: .highlighted)
+            button.setImage(highlightedStar, for: [.highlighted, .selected])
+            
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.heightAnchor.constraint(
+                equalToConstant: self.starSize.height).isActive = true
+            button.widthAnchor.constraint(
+                equalToConstant: self.starSize.width).isActive = true
+            
+            // Add click handler.
+            button.addTarget(self, action:
+                #selector(RatingControl.ratingButtonTapped(button:)),
+                for: .touchUpInside)
+            
+            // Add button to the horizontal stack view.
+            // This function call adds the view to the list of views managed by
+            // RatingControl, which is set on the HorizontalStackView UI object.
+            addArrangedSubview(button)
+            
+            // Add to our array to keep a reference to the button.
+            self.ratingButtons.append(button)
+        }
         
     }
     
