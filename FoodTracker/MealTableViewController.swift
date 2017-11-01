@@ -22,8 +22,13 @@ class MealTableViewController: UITableViewController {
         // Need to implement delegates (lower in the file).
         navigationItem.leftBarButtonItem = editButtonItem
         
-        // Load the sample data.
-        self.loadSampleMeals()
+        // Load any saved meals, otherwise load sample data.
+        if let savedMeals = loadMeals() {
+            self.meals += savedMeals
+        } else {
+            // Load the sample data.
+            self.loadSampleMeals()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,6 +78,7 @@ class MealTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the table view and the data source.
             self.meals.remove(at: indexPath.row)
+            self.saveMeals()
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -139,7 +145,10 @@ class MealTableViewController: UITableViewController {
                 self.meals.append(meal)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
+            // Save the meals.
+            self.saveMeals()
         }
+        
     }
     
     //MARK: Private Methods
@@ -167,5 +176,18 @@ class MealTableViewController: UITableViewController {
         }
         
         self.meals += [meal1, meal2, meal3]
+    }
+    
+    private func saveMeals() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(meals, toFile: Meal.ArchiveURL.path)
+        if isSuccessfulSave {
+            os_log("Meals saved successfully.", log: OSLog.default, type: .debug)
+        } else {
+            os_log("Failed to save meals.", log: OSLog.default, type: .error)
+        }
+    }
+    
+    private func loadMeals() -> [Meal]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
     }
 }
