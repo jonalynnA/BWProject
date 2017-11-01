@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MealViewController.swift
 //  FoodTracker
 //
 //  Created by Hanna Lee on 10/31/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate,
+class MealViewController: UIViewController, UITextFieldDelegate,
   UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     //MARK: Properties
@@ -38,8 +38,7 @@ class ViewController: UIViewController, UITextFieldDelegate,
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // Set the label text to be the text the user entered.
-        mealNameLabel.text = textField.text
+
     }
     
     //MARK: UIImagePickerControllerDelegate
