@@ -23,7 +23,12 @@ import UIKit
 
     //MARK: Properties
     private var ratingButtons = [UIButton]()
-    var rating = 0
+    var rating = 0 {
+        // If a rating was changed, update selected state of all buttons.
+        didSet {
+            self.updateButtonSelectionStates()
+        }
+    }
     
     // The @IBInspectable annotation lets us set these vlaues in the
     // Attributes inspector on the right sidebar.
@@ -97,11 +102,34 @@ import UIKit
             self.ratingButtons.append(button)
         }
         
+        self.updateButtonSelectionStates()
     }
     
     //Mark: Button Action
     // Need the @objc annotation so that the method is visible to #selector.
-    @objc func ratingButtonTapped(button: UIButton) {
-        print("Button pressed")
+    @objc private func ratingButtonTapped(button: UIButton) {
+        guard let index = ratingButtons.index(of: button) else {
+            fatalError("The button, \(button), is not in the ratingButtons array: \(ratingButtons)")
+        }
+        
+        // Calculate rating of the selected button.
+        let selectedRating = index + 1
+        
+        if selectedRating == self.rating {
+            // Reset the rating to 0 if the user pressed the same rating they
+            // already pressed.
+            self.rating = 0
+        } else {
+            // Otherwise, set the new rating.
+            self.rating = selectedRating
+        }
+    }
+    
+    private func updateButtonSelectionStates() {
+        for (index, button) in ratingButtons.enumerated() {
+            // If index of a button is less than the rating, that button should
+            // be selected.
+            button.isSelected = index < self.rating
+        }
     }
 }
