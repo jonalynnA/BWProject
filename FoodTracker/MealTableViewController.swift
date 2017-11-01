@@ -128,10 +128,16 @@ class MealTableViewController: UITableViewController {
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as?
             MealViewController, let meal = sourceViewController.meal {
-            // Add a new meal, compute where the new cell should be added.
-            let newIndexPath = IndexPath(row: self.meals.count, section: 0)
-            self.meals.append(meal)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Update an existing meal.
+                meals[selectedIndexPath.row] = meal
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                // Add a new meal, compute where the new cell should be added.
+                let newIndexPath = IndexPath(row: self.meals.count, section: 0)
+                self.meals.append(meal)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
         }
     }
     
