@@ -16,6 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate,
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var mealNameLabel: UILabel!
     @IBOutlet var photoImageView: UIImageView!
+    @IBOutlet var ratingControl: RatingControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +64,6 @@ class ViewController: UIViewController, UITextFieldDelegate,
     }
     
     //MARK: Actions
-    @IBAction func setDefaultLabelName(_ sender: UIButton) {
-        mealNameLabel.text = "Default Text"
-    }
     
     @IBAction func selectImageFromPhotoLibrary(
       _ sender: UITapGestureRecognizer) {

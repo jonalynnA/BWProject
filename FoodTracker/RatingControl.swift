@@ -73,7 +73,7 @@ import UIKit
         let highlightedStar = UIImage(named: "highlightedStar", in: bundle,
                                  compatibleWith: self.traitCollection)
         // Create 5 new buttons.
-        for _ in 0..<self.starCount {
+        for index in 0..<self.starCount {
             let button = UIButton()
             
             // Set button images.
@@ -88,7 +88,10 @@ import UIKit
             button.widthAnchor.constraint(
                 equalToConstant: self.starSize.width).isActive = true
             
-            // Add click handler.
+            // Set accessibility label.
+            button.accessibilityLabel = "Set \(index + 1) star rating"
+            
+            // Set button action.
             button.addTarget(self, action:
                 #selector(RatingControl.ratingButtonTapped(button:)),
                 for: .touchUpInside)
@@ -127,6 +130,29 @@ import UIKit
     
     private func updateButtonSelectionStates() {
         for (index, button) in ratingButtons.enumerated() {
+            // Set the hint string for the currently selected star.
+            let hintString: String?
+            if self.rating == index + 1 {
+                hintString = "Tap to reset the rating to zero."
+            } else {
+                hintString = nil
+            }
+            
+            // Calculate the value string.
+            let valueString: String
+            switch (self.rating) {
+            case 0:
+                valueString = "No rating set."
+            case 1:
+                valueString = "1 star set."
+            default:
+                valueString = "\(self.rating) stars set."
+            }
+            
+            // Assign hint string and value string for accessibility.
+            button.accessibilityHint = hintString
+            button.accessibilityValue = valueString
+            
             // If index of a button is less than the rating, that button should
             // be selected.
             button.isSelected = index < self.rating
