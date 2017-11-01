@@ -85,20 +85,18 @@ class MealTableViewController: UITableViewController {
         }    
     }
 
-    /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        // Rearrange the meals in the meals array to reflect this move.
+        let element = self.meals.remove(at: fromIndexPath.row)
+        self.meals.insert(element, at: to.row)
     }
-    */
 
-    /*
     // Override to support conditional rearranging of the table view.
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
+        // Return true because we allow all meals to be reorderable.
         return true
     }
-    */
 
     // MARK: - Navigation
 
