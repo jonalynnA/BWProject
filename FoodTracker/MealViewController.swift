@@ -14,9 +14,10 @@ class MealViewController: UIViewController, UITextFieldDelegate,
 
     //MARK: Properties
     
-    @IBOutlet var nameTextField: UITextField!
-    @IBOutlet var photoImageView: UIImageView!
-    @IBOutlet var ratingControl: RatingControl!
+    // Make these weak to avoid circular dependencies for ARC
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var ratingControl: RatingControl!
     /* This value is either passed by `MealTableViewController`
          in `prepare(for:sender:)`
        or constructed as part of adding a new meal.
