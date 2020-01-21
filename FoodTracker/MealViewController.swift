@@ -2,8 +2,8 @@
 //  MealViewController.swift
 //  FoodTracker
 //
-//  Created by Hanna Lee on 10/31/17.
-//  Copyright © 2017 Hanna Lee. All rights reserved.
+//  Created by Jonalynn Masters on 1/19/2020.
+//  Copyright © 2020 Jonalynn Masters. All rights reserved.
 //
 
 import UIKit
@@ -15,13 +15,14 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     //MARK: Properties
     
     // Make these weak to avoid circular dependencies for ARC
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var foodTextField: UITextField!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var ratingControl: RatingControl!
-    /* This value is either passed by `MealTableViewController`
-         in `prepare(for:sender:)`
-       or constructed as part of adding a new meal.
-    */
+    @IBOutlet weak var restaurantTextField: UITextField!
+    @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var hoursTextField: UITextField!
+     @IBOutlet weak var foodieReviewTextView: UITextView!
+    
     var meal: Meal?
     @IBOutlet var saveButton: UIBarButtonItem!
     
@@ -31,14 +32,18 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         super.viewDidLoad()
         
         // Handle the text field's user input through delegate callbacks.
-        self.nameTextField.delegate = self
+        self.foodTextField.delegate = self
         
         // Set up views if editing an existing Meal.
         if let meal = self.meal {
-            self.navigationItem.title = meal.name
-            self.nameTextField.text = meal.name
+            self.navigationItem.title = meal.foodOrdered
+            self.foodTextField.text = meal.foodOrdered
+            self.restaurantTextField.text = meal.foodOrdered
+            self.locationTextField.text = meal.foodOrdered
+            self.hoursTextField.text = meal.foodOrdered
             self.photoImageView.image = meal.photo
-            self.ratingControl.rating = meal.rating
+            self.ratingControl.rating = meal.rating ?? 1
+            self.foodTextField.text = meal.foodOrdered
         }
         
         // Enable the save button only if the text field has a valid Meal name.
@@ -101,13 +106,17 @@ class MealViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
-        let name = nameTextField.text ?? ""
+        let foodOrdered = foodTextField.text ?? ""
         let photo = photoImageView.image
         let rating = ratingControl.rating
+        let restaurantName = restaurantTextField.text
+        let location = locationTextField.text
+        let hours = hoursTextField.text
+        let foodieReview = foodieReviewTextView.text
         
         // Set the meal to be passed to MealTableViewController after the
         // unwind segue.
-        self.meal = Meal(name: name, photo: photo, rating: rating)
+        self.meal = Meal(restaurantName: restaurantName ?? "Restaurant", location: location ?? "Some Location", hours: hours ?? "Hours", foodieReview: foodieReview ?? "My Expert Foodie Opinion", foodOrdered: foodOrdered, photo: photo, rating: rating)
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
@@ -131,7 +140,7 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     @IBAction func selectImageFromPhotoLibrary(
       _ sender: UITapGestureRecognizer) {
         // Hide the keyboard.
-        nameTextField.resignFirstResponder()
+        foodTextField.resignFirstResponder()
         
         // UIImagePickerController is a view controller that lets a user pick
         // media from their photo library.
@@ -148,7 +157,7 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     // MARK: Private Methods
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
-        let text = nameTextField.text ?? ""
+        let text = foodTextField.text ?? ""
         saveButton.isEnabled = !text.isEmpty
     }
 }

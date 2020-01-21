@@ -2,8 +2,8 @@
 //  RatingControl.swift
 //  FoodTracker
 //
-//  Created by Hanna Lee on 11/1/17.
-//  Copyright © 2017 Hanna Lee. All rights reserved.
+//  Created by Jonalynn Masters on 1/19/2020.
+//  Copyright © 2020 Jonalynn Masters. All rights reserved.
 //
 
 import UIKit

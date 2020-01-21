@@ -2,12 +2,12 @@
 //  FoodTrackerTests.swift
 //  FoodTrackerTests
 //
-//  Created by Hanna Lee on 10/31/17.
-//  Copyright © 2017 Hanna Lee. All rights reserved.
+//  Created by Jonalynn Masters 1/19/2020.
+//  Copyright © 2020 Jonalynn Masters. All rights reserved.
 //
 
 import XCTest
-@testable import FoodTracker
+@testable import FoodieFun
 
 class FoodTrackerTests: XCTestCase {
     
@@ -39,12 +39,11 @@ class FoodTrackerTests: XCTestCase {
     // valid parameters.
     func testMealInitializationSucceeds() {
         // Zero rating.
-        let zeroRatingMeal = Meal.init(name: "Zero", photo: nil, rating: 0)
+        let zeroRatingMeal = Meal.init(restaurantName: "", location: "", hours: "", foodieReview: "", foodOrdered: "", photo: nil, rating: 0)
         XCTAssertNotNil(zeroRatingMeal)
         
         // Highest positive rating.
-        let positiveRatingMeal = Meal.init(name: "Positive", photo: nil,
-                                           rating: 5)
+        let positiveRatingMeal = Meal.init(restaurantName: "", location: "", hours: "", foodieReview: "", foodOrdered: "", photo: nil, rating: 5)
         XCTAssertNotNil(positiveRatingMeal)
     }
     
@@ -52,16 +51,13 @@ class FoodTrackerTests: XCTestCase {
     // rating or an empty name.
     func testMealInitializationFails () {
         // Negative rating.
-        let negativeRatingMeal = Meal.init(name: "Negative", photo: nil,
-                                           rating: -1)
+        let negativeRatingMeal = Meal.init(restaurantName: "", location: "", hours: "", foodieReview: "", foodOrdered: "", photo: nil, rating: -1)
         XCTAssertNil(negativeRatingMeal)
         
         // Empty name.
-        let emptyNameMeal = Meal.init(name: "", photo: nil, rating: 0)
-        XCTAssertNil(emptyNameMeal)
-        
+        let emptyNameMeal = Meal.init(restaurantName: "", location: "", hours: "", foodieReview: "", foodOrdered: "", photo: nil, rating: 3)
         // Rating exceeds maximum.
-        let largeRatingMeal = Meal.init(name: "Large", photo: nil, rating: 6)
+        let largeRatingMeal = Meal.init(restaurantName: "", location: "", hours: "", foodieReview: "", foodOrdered: "", photo: nil, rating: 6)
         XCTAssertNil(largeRatingMeal)
     }
     

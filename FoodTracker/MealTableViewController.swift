@@ -2,8 +2,8 @@
 //  MealTableViewController.swift
 //  FoodTracker
 //
-//  Created by Hanna Lee on 11/1/17.
-//  Copyright © 2017 Hanna Lee. All rights reserved.
+//  Created by Jonalynn Masters on 1/19/2020.
+//  Copyright © 2020 Jonalynn Masters. All rights reserved.
 //
 
 import UIKit
@@ -28,6 +28,7 @@ class MealTableViewController: UITableViewController {
         } else {
             // Load the sample data.
             self.loadSampleMeals()
+            return
         }
     }
 
@@ -60,9 +61,9 @@ class MealTableViewController: UITableViewController {
 
         let meal = meals[indexPath.row]
 
-        cell.nameLabel.text = meal.name
+        cell.nameLabel.text = meal.foodOrdered
         cell.photoImageView.image = meal.photo
-        cell.ratingControl.rating = meal.rating
+        cell.ratingControl.rating = meal.rating ?? 1
 
         return cell
     }
@@ -155,24 +156,22 @@ class MealTableViewController: UITableViewController {
         let photo1 = UIImage(named: "meal1")
         let photo2 = UIImage(named: "meal2")
         let photo3 = UIImage(named: "meal3")
-        
-        guard let meal1 = Meal(name: "Caprese Salad", photo: photo1, rating: 4)
+
+        guard let meal1 = Meal(restaurantName: "Buona Forchetta", location: "Liberty Station", hours: "4-10p", foodieReview: "Delicious", foodOrdered: "Caprese", photo: photo1, rating: 0)
             else {
                 fatalError("Unable to instantiate meal1")
         }
-        
-        guard let meal2 = Meal(name: "Chicken and Potatoes", photo: photo2,
-                               rating: 5)
+
+        guard let meal2 = Meal(restaurantName: "Chicken Joint", location: "Somewhere", hours: "", foodieReview: "Best damn chicken ever", foodOrdered: "Chicken and Potatoes", photo: photo2, rating: 5)
             else {
                 fatalError("Unable to instantiate meal2")
         }
-        
-        guard let meal3 = Meal(name: "Pasta with Meatballs", photo: photo3,
-                               rating: 3)
+
+        guard let meal3 = Meal(restaurantName: "Noodles and Noodles", location: "My Kitchen", hours: "24/7", foodieReview: "Obviousy Amazing", foodOrdered: "Spaghetti and Meatballs", photo: photo3, rating: 5)
             else {
                 fatalError("Unable to instantiate meal3")
         }
-        
+
         self.meals += [meal1, meal2, meal3]
     }
     
